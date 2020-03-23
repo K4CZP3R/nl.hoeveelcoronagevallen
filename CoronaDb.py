@@ -15,3 +15,13 @@ class CoronaDb:
         for x in doc:
             return RivmData.fromDict(x)
         return None
+    def get_days_data(self) -> [RivmData]:
+        doc = self.db_rivm.find({}).sort([(RivmDataEntries.unix_time, pymongo.DESCENDING)])
+
+        days = {}
+        for x in doc:
+            day = RivmData.fromDict(x)
+
+            if day.ymd not in days:
+                days[day.ymd] = day
+        return days

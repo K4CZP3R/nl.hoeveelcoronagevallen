@@ -1,7 +1,11 @@
 import requests, bs4
 from time import sleep, time
 import CoronaDb, RivmData
+from datetime import date
 
+def get_current_date():
+    today = date.today()
+    return f"{today.year}.{today.month}.{today.day}"
 
 def get_rivm_covid():
     res = requests.get("https://www.rivm.nl/nieuws/actuele-informatie-over-coronavirus").text
@@ -21,18 +25,16 @@ while True:
         last_check = int(time())
 
         scrapper = get_rivm_covid()
-
+        current_date = get_current_date()
         actual_corona_gevallen = scrapper[0]
-        print(f"Actual gevallen: {actual_corona_gevallen}")
         actual_corona_kop = scrapper[1]
-        print(f"Laatste kop: {actual_corona_kop}")
         actual_corona_time = int(time())
-        print(f"Corona update! Gevallen: {actual_corona_gevallen} at time={actual_corona_time} with kop={actual_corona_kop}")
         try:
             actual_corona_gevallen = int(actual_corona_gevallen)
         except ValueError:
             print("INVALID CORONA GEVALLEN!")
             continue
-        r_data = RivmData.RivmData(actual_corona_time, actual_corona_gevallen, actual_corona_kop)
+
+        r_data = RivmData.RivmData(actual_corona_time, actual_corona_gevallen, actual_corona_kop, current_date)
         cdb.add_data(r_data)
     

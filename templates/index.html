@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Favicons -->
     <meta name="theme-color" content="#563d7c">
-	<link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-icon-76x76.png">
@@ -65,6 +65,36 @@
         <main role="main" class="inner cover">
             <h1 class="cover-heading">{{gevallen}} <br><span class="badge badge-secondary">{{laatste_update}}</span></h1>
             <br>
+
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Datum</th>
+                        <th scope="col">Aantal gevallen</th>
+                        <th scope="col">Delta t.o.v. vorige dag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in days_data %}
+                    <tr>
+                        <th scope="row">{{day[1]}}</th>
+                        <td>{{day[2]}}</td>
+                        {% if day[3] > 0 %}
+                        <td>
+                            <span class="badge badge-danger">+{{day[3]}}</span>
+                        </td>
+                        {% else %}
+                        <td>
+                            <span class="badge badge-success">{{day[3]}}</span>
+                        </td>
+
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            <br>
             <p class="lead">
                 <a href="https://rivm.nl" class="btn btn-secondary">Source: rivm.nl</a>
             </p>
@@ -72,7 +102,7 @@
 
         <footer class="mastfoot mt-auto">
             <div class="inner">
-                <p>By <a href="https://github.com/K4CZP3R" target="_blank">K4CZP3R</a></p>
+                <p>By <a href="https://github.com/K4CZP3R" target="_blank">K4CZP3R</a> Ver: 1.0</p>
             </div>
         </footer>
     </div>
