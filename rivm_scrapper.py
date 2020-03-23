@@ -8,7 +8,7 @@ def get_rivm_covid():
     soup = bs4.BeautifulSoup(res, features="html.parser")
 
     gevallen = soup.select_one("td h2").text
-    laatste_kop = soup.select_one("h2:nth-of-type(2)").text
+    laatste_kop = soup.select_one("h2:nth-of-type(2)").text.encode("UTF-8").decode("ASCII","ignore")
     return [gevallen, laatste_kop]
 
 cdb = CoronaDb.CoronaDb()
@@ -23,7 +23,9 @@ while True:
         scrapper = get_rivm_covid()
 
         actual_corona_gevallen = scrapper[0]
+        print(f"Actual gevallen: {actual_corona_gevallen}")
         actual_corona_kop = scrapper[1]
+        print(f"Laatste kop: {actual_corona_kop}")
         actual_corona_time = int(time())
         print(f"Corona update! Gevallen: {actual_corona_gevallen} at time={actual_corona_time} with kop={actual_corona_kop}")
         try:
